@@ -1,0 +1,16 @@
+Index: micropython/mpy-cross/Makefile
+===================================================================
+--- micropython.orig/mpy-cross/Makefile
++++ micropython/mpy-cross/Makefile
+@@ -8,6 +8,11 @@ QSTR_DEFS = qstrdefsport.h
+
+ # OS name, for simple autoconfig
+ UNAME_S := $(shell uname -s)
++
++ifeq ($(UNAME_S),Darwin)
++override CC := /usr/bin/clang
++override LD := /usr/bin/ld
++endif
+
+ # include py core make definitions
+ include $(TOP)/py/py.mk
