@@ -96,6 +96,46 @@ const mic_obj_t m5_mic     = {&mp_mic_type,       &(M5.Mic)    };
 static btn_obj_t *m5_btn_list[5] = {&m5_btnA, &m5_btnB, &m5_btnC, &m5_btnPWR, &m5_btnEXT};
 /* *FORMAT-ON* */
 
+static void m5_config_helper(mp_obj_t config_obj, m5::M5Unified::config_t &cfg) {
+    if (!MP_OBJ_IS_TYPE(config_obj, &mp_type_dict)) {
+        mp_raise_TypeError(MP_ERROR_TEXT("parameter must be a dict"));
+    }
+
+    mp_map_t *config_map = mp_obj_dict_get_map(config_obj);
+    for (size_t i = 0; i < config_map->alloc; i++) {
+        if (MP_MAP_SLOT_IS_FILLED(config_map, i)) {
+            mp_obj_t key = config_map->table[i].key;
+            mp_obj_t value = config_map->table[i].value;
+            const char *key_str = mp_obj_str_get_str(key);
+
+            if (strcmp(key_str, "clear_display") == 0) {
+                cfg.clear_display = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "output_power") == 0) {
+                cfg.output_power = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "pmic_button") == 0) {
+                cfg.pmic_button = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "internal_imu") == 0) {
+                cfg.internal_imu = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "internal_rtc") == 0) {
+                cfg.internal_rtc = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "internal_mic") == 0) {
+                cfg.internal_mic = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "internal_spk") == 0) {
+                cfg.internal_spk = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "internal_als") == 0) {
+                cfg.internal_als = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "external_imu") == 0) {
+                cfg.external_imu = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "external_rtc") == 0) {
+                cfg.external_rtc = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "disable_rtc_irq") == 0) {
+                cfg.disable_rtc_irq = mp_obj_is_true(value);
+            } else if (strcmp(key_str, "led_brightness") == 0) {
+                cfg.led_brightness = mp_obj_get_int(value);
+            }
+        }
+    }
+}
 
 static void m5_config_helper_module_display(mp_obj_t config_obj, M5ModuleDisplay::config_t &cfg) {
     if (!MP_OBJ_IS_TYPE(config_obj, &mp_type_dict)) {
@@ -521,24 +561,17 @@ void rtc_sync(struct timeval *tv_in) {
     M5.Rtc.setDateTime(&now);
 }
 
-// TODO: pass configuration parameters
 mp_obj_t m5_begin(size_t n_args, const mp_obj_t *args) {
-    mp_obj_t config_obj = mp_const_none;
-
     auto cfg = M5.config();
-    cfg.external_display_value = 0; // disable all external display
+    cfg.external_display_value = 0; // disable all external display by default
 
     if (n_args > 0) {
-        config_obj = args[0];
-        if (!MP_OBJ_IS_TYPE(config_obj, &mp_type_dict)) {
-            mp_raise_TypeError(MP_ERROR_TEXT("parameter must be a dict"));
-        }
-        // m5_config_helper(config_obj, cfg);
+        m5_config_helper(args[0], cfg);
     }
 
     // initial
     M5.begin(cfg);
-    M5.Power.setExtOutput(true); // enable external power by default
+    M5.Power.setExtOutput(cfg.output_power);
     M5.In_I2C.release();
     in_i2c_init();
     // if (M5.getBoard() != m5::board_t::board_M5StackCoreS3
@@ -556,7 +589,9 @@ mp_obj_t m5_begin(size_t n_args, const mp_obj_t *args) {
     }
     #endif
 
-    M5.Display.clear();
+    if (cfg.clear_display) {
+        M5.Display.clear();
+    }
     // default display
     m5_display.gfx = (void *)(&(M5.Display));
     // set default font to Montserrat 12, keep same style with UIFlow website UI design.
