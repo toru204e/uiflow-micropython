@@ -5,6 +5,7 @@
 set(COMPONENT_ADD_INCLUDEDIRS
     M5Unified/src
     M5GFX/src/
+    M5GFX/src/lgfx/Fonts/lvgl
     .
 )
 
