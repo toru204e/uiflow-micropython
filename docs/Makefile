@@ -5,7 +5,7 @@
 # from the environment for the first two.
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
-SPHINX_PARALLEL ?= auto
+SPHINX_PARALLEL ?= 8
 SOURCEDIR     = source
 BUILDDIR      = build/$(SOURCEDIR)
 

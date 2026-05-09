@@ -142,6 +142,13 @@ build-firmware:
 build-docs:
   stage: docs
   interruptible: true
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  cache:
+    key: "$CI_PROJECT_ID-docs-pip"
+    paths:
+      - .cache/pip
+    policy: pull-push
   rules:
     - changes:
         - docs/**/*
