@@ -116,6 +116,7 @@ build-firmware:
           M5STACK_Cardputer
           M5STACK_CardputerADV
           M5STACK_CoreS3
+          M5STACK_StackChan
           M5STACK_Dial
           M5STACK_DinMeter
           M5STACK_DualKey
