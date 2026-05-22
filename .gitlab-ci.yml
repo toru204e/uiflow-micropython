@@ -122,6 +122,7 @@ build-firmware:
           M5STACK_DualKey
           M5STACK_StickC_PLUS2
           M5STACK_StickS3
+          M5STACK_StopWatch
           M5STACK_Tab5
           M5STACK_Core2
       - SHARD_NAME: ["esp32-list4"] # 9 M5Stack boards + 2 third-party boards
