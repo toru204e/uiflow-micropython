@@ -12,13 +12,6 @@ import os
 import time
 from unit import KeyCode
 
-try:
-    import M5Things
-
-    _HAS_SERVER = True
-except ImportError:
-    _HAS_SERVER = False
-
 
 class RunApp(app_base.AppBase):
     def __init__(self, icos: dict, data=None) -> None:
@@ -29,7 +22,7 @@ class RunApp(app_base.AppBase):
         pass
 
     def on_launch(self):
-        self._mtime_text, self._account_text, self._ver_text = self._get_file_info("main.py")
+        self._mtime_text, self._ver_text = self._get_file_info("main.py")
 
     def on_view(self):
         M5.Lcd.fillRect(0, 16, 240, 119, 0xEEEEEF)
@@ -59,22 +52,10 @@ class RunApp(app_base.AppBase):
         )
         self._mtime_label.set_text(self._mtime_text)
 
-        self._account_label = widgets.Label(
-            "Account: XXABC",
-            16,
-            60,
-            w=208,
-            font_align=widgets.Label.LEFT_ALIGNED,
-            fg_color=0x000000,
-            bg_color=0xFFFFFF,
-            font=res.MontserratMedium10_VLW,
-        )
-        self._account_label.set_text(self._account_text)
-
         self._ver_label = widgets.Label(
             "Ver: UIFLOW2.0 a18",
             16,
-            74,
+            60,
             w=208,
             font_align=widgets.Label.LEFT_ALIGNED,
             fg_color=0x000000,
@@ -97,7 +78,6 @@ class RunApp(app_base.AppBase):
         del (
             self._name_label,
             self._mtime_label,
-            self._account_label,
             self._ver_label,
         )
 
@@ -112,9 +92,8 @@ class RunApp(app_base.AppBase):
         machine.reset()
 
     @staticmethod
-    def _get_file_info(path) -> tuple(str, str, str):
+    def _get_file_info(path) -> tuple(str, str):
         mtime = None
-        account = None
         ver = f"Ver: UIFLOW2 {esp32.firmware_info()[3]}"
 
         try:
@@ -132,20 +111,11 @@ class RunApp(app_base.AppBase):
 
         with open(path, "r") as f:
             for line in f:
-                if line.find("Account") != -1:
-                    account = line.split(":")[1].strip()
                 if line.find("Ver") != -1:
                     ver = line.split(":")[1].strip()
-                if account is not None and ver is not None:
                     break
 
-        if account is None and _HAS_SERVER and M5Things.status() == 2:
-            infos = M5Things.info()
-            account = "Account: None" if len(infos[1]) == 0 else "Account: {:s}".format(infos[1])
-        else:
-            account = "Account: None"
-
-        return (mtime, account, ver)
+        return (mtime, ver)
 
     async def _kb_event_handler(self, event, fw):
         if event.key == KeyCode.KEYCODE_RIGHT:  # Right key

@@ -11,8 +11,9 @@ _attrs = {
     "RUN_ALWAYS_SELECT_IMG": "/system/cardputer/apprun/run_always_select.jpeg",
     "RUN_ALWAYS_UNSELECT_IMG": "/system/cardputer/apprun/run_always_unselect.jpeg",
     # develop
-    "DEVELOP_PRIVATE_IMG": "/system/cardputer/develop/private.jpeg",
-    "DEVELOP_PUBLIC_IMG": "/system/cardputer/develop/public.jpeg",
+    "DEVELOP_BG_IMG": "/system/cardputer/develop/bg.jpg",
+    "DEVELOP_OFFLINE_IMG": "/system/cardputer/develop/offline.jpg",
+    "DEVELOP_ONLINE_IMG": "/system/cardputer/develop/online.jpg",
     "AVATAR_IMG": "/system/common/img/avatar.jpg",
     # ezdata
     # launcher
