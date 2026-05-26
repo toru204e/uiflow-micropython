@@ -342,9 +342,10 @@ class CloudApp(AppBase):
     def __init__(self, data) -> None:
         self._wifi = data[0]
         self._ssid = str(data[1]) if len(data[1]) else str(None)
-        self._user_id = None
         self._server = None
         self._cloud_status = 0
+        self._nick_name = ""
+        self._pair_code = ""
 
     def _get_server(self):
         import esp32
@@ -386,11 +387,25 @@ class CloudApp(AppBase):
             _cloud_status = 3
         return _cloud_status
 
-    def _get_user_id(self):
-        if _HAS_SERVER:
-            return None if len(M5Things.info()[1]) == 0 else M5Things.info()[1]
-        else:
-            return None
+    def _get_pair_code(self):
+        if _HAS_SERVER and self._cloud_status == 4:
+            try:
+                return M5Things.paircode() or ""
+            except Exception:
+                pass
+        return ""
+
+    def _get_nick_name(self):
+        if _HAS_SERVER and self._cloud_status == 4:
+            try:
+                return M5Things.nick_name() or ""
+            except Exception:
+                pass
+        return ""
+
+    def _update_pair_data(self):
+        self._pair_code = self._get_pair_code()
+        self._nick_name = self._get_nick_name()
 
     def _load_data(self):
         self._server = self._get_server()
@@ -399,7 +414,7 @@ class CloudApp(AppBase):
             "sg.m5stack.com": _cloud_icos_1,
         }[self._server]
         self._cloud_status = self._get_cloud_status()
-        self._user_id = self._get_user_id()
+        self._update_pair_data()
 
     def _update_data(self):
         self._icos = {
@@ -407,7 +422,7 @@ class CloudApp(AppBase):
             "sg.m5stack.com": _cloud_icos_1,
         }[self._server]
         self._cloud_status = self._get_cloud_status()
-        self._user_id = self._get_user_id()
+        self._update_pair_data()
 
     def _load_view(self):
         # bg img
@@ -417,8 +432,9 @@ class CloudApp(AppBase):
         self._ssid_label.set_text_color(0x000000, _txt_bg_colors.get(self._cloud_status))
         self._ssid_label.set_text(self._ssid)
 
-        # user id
-        self._user_id_label.set_text(str(self._user_id))
+        # access code
+        self._pair_code_label.set_text(self._pair_code)
+        self._nick_name_label.set_text(self._nick_name)
 
         # rssi
         if self._cloud_status in (3, 4):
@@ -435,7 +451,7 @@ class CloudApp(AppBase):
             "sg.m5stack.com": _cloud_icos_1,
         }[self._server]
         self._cloud_status = self._get_cloud_status()
-        self._user_id = self._get_user_id()
+        self._update_pair_data()
 
     def on_view(self):
         self._battery_label = widgets.Label(
@@ -476,18 +492,54 @@ class CloudApp(AppBase):
         )
         self._ssid_label.set_long_mode(widgets.Label.LONG_DOT)
 
-        self._user_id_label = widgets.Label(
-            str(None),
+        self._nick_caption_label = widgets.Label(
+            "Nickname:",
             int(135 / 2),
-            170,
+            126,
             w=135,
-            h=20,
+            h=17,
+            font_align=widgets.Label.CENTER_ALIGNED,
+            fg_color=0xFFFFFF,
+            bg_color=0x000000,
+            font=M5.Lcd.FONTS.Montserrat14,
+        )
+
+        self._nick_name_label = widgets.Label(
+            "",
+            int(135 / 2),
+            143,
+            w=135,
+            h=22,
             font_align=widgets.Label.CENTER_ALIGNED,
             fg_color=0xFFFFFF,
             bg_color=0x000000,
             font=M5.Lcd.FONTS.Montserrat18,
         )
-        self._user_id_label.set_long_mode(widgets.Label.LONG_DOT)
+        self._nick_name_label.set_long_mode(widgets.Label.LONG_DOT)
+
+        self._pair_caption_label = widgets.Label(
+            "Access Code:",
+            int(135 / 2),
+            166,
+            w=135,
+            h=17,
+            font_align=widgets.Label.CENTER_ALIGNED,
+            fg_color=0xFFFFFF,
+            bg_color=0x000000,
+            font=M5.Lcd.FONTS.Montserrat14,
+        )
+
+        self._pair_code_label = widgets.Label(
+            "",
+            int(135 / 2),
+            183,
+            w=135,
+            h=29,
+            font_align=widgets.Label.CENTER_ALIGNED,
+            fg_color=0xFFFFFF,
+            bg_color=0x000000,
+            font=M5.Lcd.FONTS.Montserrat24,
+        )
 
         self._bg_img = widgets.Image(use_sprite=False)
         self._bg_img.set_x(0)
@@ -503,12 +555,23 @@ class CloudApp(AppBase):
                 self._cloud_status = t
                 self._update_data()
                 self._load_view()
-                await asyncio.sleep_ms(1000)
             else:
-                await asyncio.sleep_ms(1000)
+                nick_name = self._get_nick_name()
+                if nick_name != self._nick_name:
+                    self._nick_name = nick_name
+                    self._nick_name_label.set_text(nick_name)
+
+                pair_code = self._get_pair_code()
+                if pair_code != self._pair_code:
+                    self._pair_code = pair_code
+                    self._pair_code_label.set_text(pair_code)
+
+            await asyncio.sleep_ms(1000)
 
     def on_exit(self):
-        del self._battery_label, self._ssid_label, self._rssi_label, self._user_id_label
+        del self._battery_label, self._ssid_label, self._rssi_label
+        del self._nick_caption_label, self._nick_name_label
+        del self._pair_caption_label, self._pair_code_label
         del self._bg_img
 
     async def _keycode_enter_event_handler(self, fw):
