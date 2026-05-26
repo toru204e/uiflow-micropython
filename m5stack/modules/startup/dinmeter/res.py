@@ -11,8 +11,9 @@ _attrs = {
     "RUN_ALWAYS_SELECT_IMG": "/system/dinmeter/apprun/run_always_select.jpeg",
     "RUN_ALWAYS_UNSELECT_IMG": "/system/dinmeter/apprun/run_always_unselect.jpeg",
     # develop
-    "DEVELOP_PRIVATE_IMG": "/system/dinmeter/develop/private.jpeg",
-    "DEVELOP_PUBLIC_IMG": "/system/dinmeter/develop/public.jpeg",
+    "DEVELOP_BG_IMG": "/system/dinmeter/develop/bg.jpg",
+    "DEVELOP_OFFLINE_IMG": "/system/dinmeter/develop/offline.jpg",
+    "DEVELOP_ONLINE_IMG": "/system/dinmeter/develop/online.jpg",
     "AVATAR_IMG": "/system/common/img/avatar.jpg",
     # ezdata
     # launcher
