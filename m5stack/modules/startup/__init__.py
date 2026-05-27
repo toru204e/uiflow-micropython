@@ -149,7 +149,9 @@ def _apply_boot_button_override(boot_opt, nvs):
 
 
 def _prepare_board(board_id):
-    if board_id != M5.BOARD.M5PaperColor:
+    if board_id == M5.BOARD.M5Tab5:
+        M5.Lcd.clear(0xFFFFFF)
+    elif board_id != M5.BOARD.M5PaperColor:
         M5.Lcd.clear()
     if board_id == M5.BOARD.M5StickCPlus2:
         from machine import Pin
