@@ -14,7 +14,6 @@ package(
         "ir.py",
         "lora.py",
         "matrix_keyboard.py",
-        "plcio.py",
         "pwr485.py",
         "rfid.py",
         "rgb.py",

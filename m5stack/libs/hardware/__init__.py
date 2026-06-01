@@ -11,8 +11,6 @@ _attrs = {
     "IR": "ir",
     "LoRa": "lora",
     "MatrixKeyboard": "matrix_keyboard",
-    "DigitalInput": "plcio",
-    "Relay": "plcio",
     "PWR485": "pwr485",
     "RFID": "rfid",
     "RGB": "rgb",

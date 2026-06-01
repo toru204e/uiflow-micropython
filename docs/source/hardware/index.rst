@@ -14,7 +14,6 @@ Hardware
     lora.rst
     mic.rst
     pin.rst
-    plcio.rst
     pwr485.rst
     pwrcan.rst
     rotary.rst
