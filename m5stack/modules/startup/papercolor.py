@@ -136,7 +136,7 @@ class PaperColorCloudApp(AppBase):
         if wifi_ok and _HAS_SERVER:
             cloud_status = M5Things.status()
             if cloud_status == 2:
-                pair_code = M5Things.paircode()
+                pair_code = M5Things.accesscode()
                 nick_name = M5Things.nick_name()
 
         cloud_ok = wifi_ok and _HAS_SERVER and cloud_status == 2 and pair_code != ""
@@ -168,7 +168,7 @@ class PaperColorCloudApp(AppBase):
             self._logged_ip = state["ip_addr"]
 
         if state["pair_code"] and state["pair_code"] != self._logged_pair_code:
-            print(f"Pair code: {state['pair_code']}")
+            print(f"Access code: {state['pair_code']}")
             self._logged_pair_code = state["pair_code"]
 
     def _log_wait_stage(self, state) -> None:
@@ -184,8 +184,8 @@ class PaperColorCloudApp(AppBase):
                 stage = "server"
                 message = "Waiting for server connection"
             else:
-                stage = "pair-code"
-                message = "Waiting for pair code"
+                stage = "access-code"
+                message = "Waiting for access code"
         else:
             stage = None
             message = None

@@ -78,12 +78,12 @@ class Unit_PoEP4_Startup:
                 time.sleep(1)
                 eth_status = self._net_if.connect_status()
                 if eth_status is network.ETH_GOT_IP:
-                    pair_code = M5Things.paircode()
+                    pair_code = M5Things.accesscode()
                     if pair_code != "":
                         print("Local IP: " + self._net_if.local_ip())
                         print("=======================")
                         print("Nick Name: " + M5Things.nick_name())
-                        print("Pair Code: " + pair_code)
+                        print("Access Code: " + pair_code)
                         print("=======================")
                         self._unit_poep4_rgb_show("green")
                         success = True

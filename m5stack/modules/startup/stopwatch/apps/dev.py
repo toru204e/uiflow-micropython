@@ -218,7 +218,7 @@ class DevApp(app_base.AppBase):
             try:
                 if M5Things.status() == 2:
                     nick = M5Things.nick_name() or "-"
-                    code = M5Things.paircode() or ""
+                    code = M5Things.accesscode() or ""
             except Exception:
                 pass
 

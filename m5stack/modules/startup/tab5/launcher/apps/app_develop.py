@@ -182,7 +182,7 @@ class AppDevelop(AppBase):
     def _get_pair_code(m5things, is_cloud_connected):
         if m5things and is_cloud_connected:
             try:
-                return m5things.paircode() or ""
+                return m5things.accesscode() or ""
             except Exception:
                 pass
         return ""
