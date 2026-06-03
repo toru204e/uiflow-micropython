@@ -157,7 +157,7 @@ class DevApp(app_base.AppBase):
         if _HAS_SERVER is True:
             try:
                 if M5Things.status() == 2:
-                    return M5Things.paircode() or ""
+                    return M5Things.accesscode() or ""
             except Exception:
                 pass
         return ""
