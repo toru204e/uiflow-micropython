@@ -9,5 +9,7 @@ Chain
     chainbus.rst
     joystick.rst
     key.rst
+    mono.rst
+    rgb.rst
     tof.rst
     unit_bus.rst

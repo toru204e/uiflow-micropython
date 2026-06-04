@@ -11,6 +11,8 @@ package(
         "chain.py",
         "joystick.py",
         "key.py",
+        "mono.py",
+        "rgb.py",
         "tof.py",
         "unit_bus.py",
     ),

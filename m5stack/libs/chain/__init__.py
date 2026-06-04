@@ -9,6 +9,8 @@ _attrs = {
     "EncoderChain": "encoder",
     "JoystickChain": "joystick",
     "KeyChain": "key",
+    "MonoChain": "mono",
+    "RGBChain": "rgb",
     "ToFChain": "tof",
 }
 
