@@ -30,6 +30,30 @@ Scroll states use ``MonoChain.SCROLL_STATE_START``,
 Display rotation uses ``MonoChain.ROTATION_0``, ``MonoChain.ROTATION_90``,
 ``MonoChain.ROTATION_180``, and ``MonoChain.ROTATION_270``.
 
+UiFlow2 Example
+---------------
+
+Scroll text, rotation, and brightness control
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the |basic_chain_mono_example.m5f2| project in UiFlow2.
+
+This example initializes Chain Mono in scroll mode and displays the text
+``M5STACK``. It also shows a simple controller UI on the host display and uses
+the hardware buttons to control the Chain Mono module.
+
+- ``BtnA`` toggles the scroll state between start and pause.
+- ``BtnB`` cycles the display rotation through 0, 90, 180, and 270 degrees.
+- ``BtnC`` cycles the display brightness level.
+
+UiFlow2 Code Block:
+
+    |example.png|
+
+Example output:
+
+    None
+
 MicroPython Examples
 --------------------
 

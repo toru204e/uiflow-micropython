@@ -31,6 +31,30 @@ Scroll states use ``RGBChain.SCROLL_STATE_START``,
 Display rotation uses ``RGBChain.ROTATION_0``, ``RGBChain.ROTATION_90``,
 ``RGBChain.ROTATION_180``, and ``RGBChain.ROTATION_270``.
 
+UiFlow2 Example
+---------------
+
+Scroll text, rotation, and brightness control
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the |basic_chain_rgb_example.m5f2| project in UiFlow2.
+
+This example initializes Chain RGB in scroll mode and displays the text
+``M5STACK`` in cyan. It also shows a simple controller UI on the host display
+and uses the hardware buttons to control the Chain RGB module.
+
+- ``BtnA`` toggles the scroll state between start and pause.
+- ``BtnB`` cycles the display rotation through 0, 90, 180, and 270 degrees.
+- ``BtnC`` cycles the display brightness level.
+
+UiFlow2 Code Block:
+
+    |example.png|
+
+Example output:
+
+    None
+
 MicroPython Examples
 --------------------
 
