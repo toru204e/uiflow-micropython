@@ -15,7 +15,7 @@ git -C esp-idf submodule update --init --recursive
 ### Building the firmware
 
 ```shell
-git clone https://github.com/m5stack/uiflow_micropython
+git clone https://github.com/toru204e/uiflow_micropython
 cd uiflow_micropython/m5stack
 make submodules
 make patch
